@@ -53,6 +53,49 @@ module Displayable
   end
 end
 
+module Scoreable
+  def set_play_to_score
+    play_to_score = nil
+    loop do
+      puts "What score do you want to play to? (Enter a number from 1-10)."
+      play_to_score = gets.chomp.to_i
+      break if (1..10).include?(play_to_score)
+    end
+    self.play_to_score = play_to_score
+    @@play_to_score = play_to_score
+    system 'clear'
+  end
+
+  # wasn't sure about using a class variable here (ln 243)
+  # feels wrong because I'm only using it for Calculon
+  # but I wasn't sure how else to accomplish Calc's feature
+  def update_score
+    if human.move > computer.move
+      human.score += 1
+      Human.score += 1
+    elsif human.move < computer.move
+      computer.score += 1
+      Human.score += 1
+    end
+  end
+
+  def reset_scores
+    Human.score = 0
+    human.score = 0
+    computer.score = 0
+  end
+
+  def start_game_score_sequence
+    reset_scores
+    set_play_to_score
+  end
+
+  def score_sequence
+    update_score
+    display_score
+  end
+end
+
 class Move
   attr_accessor :value
 
@@ -228,49 +271,6 @@ class History
 
   def log_move!(player, move)
     move_log[player] << move.value
-  end
-end
-
-module Scoreable
-  def set_play_to_score
-    play_to_score = nil
-    loop do
-      puts "What score do you want to play to? (Enter a number from 1-10)."
-      play_to_score = gets.chomp.to_i
-      break if (1..10).include?(play_to_score)
-    end
-    self.play_to_score = play_to_score
-    @@play_to_score = play_to_score
-    system 'clear'
-  end
-
-  # wasn't sure about using a class variable here (ln 243)
-  # feels wrong because I'm only using it for Calculon
-  # but I wasn't sure how else to accomplish Calc's feature
-  def update_score
-    if human.move > computer.move
-      human.score += 1
-      Human.score += 1
-    elsif human.move < computer.move
-      computer.score += 1
-      Human.score += 1
-    end
-  end
-
-  def reset_scores
-    Human.score = 0
-    human.score = 0
-    computer.score = 0
-  end
-
-  def start_game_score_sequence
-    reset_scores
-    set_play_to_score
-  end
-
-  def score_sequence
-    update_score
-    display_score
   end
 end
 
