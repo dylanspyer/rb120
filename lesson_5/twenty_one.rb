@@ -1,4 +1,38 @@
-module Formatable
+module Displayable
+  def display_goodbye_message
+    puts "Thanks for playing Twenty one!"
+    puts "Goodbye!"
+  end
+
+  def display_total
+    puts "#{self.class} has a total of #{calculate_hand_total!}"
+  end
+
+  def display_push
+    puts "It's a tie!"
+  end
+
+  def display_player_wins
+    puts "You won!"
+  end
+
+  def display_dealer_wins
+    puts "The dealer won!"
+  end
+
+  def display_welcome_message
+    clear
+    puts "Welcome to Twenty One"
+    puts "Try to get as close to 21 without going over"
+    puts "Cards are worth their face value in points"
+    puts "Face cards are worth 10"
+    puts "Aces are worth 1 or 11"
+    puts "The dealer will keep hitting if they are below 17"
+    puts "Good luck! Press enter to start playing!"
+    gets
+    clear
+  end
+
   SUIT_KEY = { 'H' => '♥', 'D' => '♦', 'C' => '♣', 'S' => '♠' }
 
   def convert_suit(suit)
@@ -85,42 +119,6 @@ module Formatable
   end
 end
 
-module Displayable
-  def display_goodbye_message
-    puts "Thanks for playing Twenty one!"
-    puts "Goodbye!"
-  end
-
-  def display_total
-    puts "#{self.class} has a total of #{calculate_hand_total!}"
-  end
-
-  def display_push
-    puts "It's a tie!"
-  end
-
-  def display_player_wins
-    puts "You won!"
-  end
-
-  def display_dealer_wins
-    puts "The dealer won!"
-  end
-
-  def display_welcome_message
-    clear
-    puts "Welcome to Twenty One"
-    puts "Try to get as close to 21 without going over"
-    puts "Cards are worth their face value in points"
-    puts "Face cards are worth 10"
-    puts "Aces are worth 1 or 11"
-    puts "The dealer will keep hitting if they are below 17"
-    puts "Good luck! Press enter to start playing!"
-    gets
-    clear
-  end
-end
-
 class Participant
   attr_accessor :hand, :total
 
@@ -162,17 +160,9 @@ class Participant
   end
 end
 
-class Player < Participant
-  include Formatable
-
-  def initialize
-    super
-  end
-end
+class Player < Participant; end
 
 class Dealer < Participant
-  include Formatable
-
   def initialize(deck, player_hand)
     @deck = deck.cards
     @player_hand = player_hand
